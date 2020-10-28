@@ -47,7 +47,7 @@ do
   sed -i -e "s/refresh\" : [0-9]*/refresh\" : ${INTERVAL}000/" $dir/receiver.json
   
   # Get the latest chunk number
-  [ -f chunk_0.gz ] && lastChunk=$(ls chunk_*.gz -t | cut -c7- | rev | cut -c4- | rev | head -n 1) || lastChunk=0
+  [ -f chunk_0.gz ] && (lastChunk=$(ls chunk_*.gz -t | cut -c7- | rev | cut -c4- | rev | head -n 2 | tail -n +2)) && lastChunk=$((lastChunk+1)) || lastChunk=0
   [[ $lastChunk -ge $chunks ]] && lastChunk=0
   # Update history(chunk number) in receiver.json
   sed -i -e "s/history\" : [0-9]*/history\" : $((chunks+1))/" $dir/receiver.json
